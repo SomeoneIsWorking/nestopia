@@ -479,6 +479,7 @@ namespace Nes
 			Flags flags;
 			Interrupt interrupt;
 			Hooks hooks;
+			uint lastPc;
 			uint opcode;
 			word jammed;
 			word model;
@@ -505,7 +506,9 @@ namespace Nes
 			/* difftest accessor — exposes CPU registers and RAM for comparison */
 			struct DifftestState
 			{
+				uint last_pc;
 				uint pc, a, x, y, sp;
+				uint opcode;
 				uint flags_packed; /* Flags::Pack() result = standard P byte */
 				const byte *ram;   /* points to internal 2KB RAM (valid until next call) */
 			};
@@ -513,11 +516,13 @@ namespace Nes
 			DifftestState GetDifftestState() const
 			{
 				DifftestState s;
+				s.last_pc      = lastPc;
 				s.pc           = pc;
 				s.a            = a;
 				s.x            = x;
 				s.y            = y;
 				s.sp           = sp;
+				s.opcode       = opcode;
 				s.flags_packed = flags.Pack();
 				s.ram          = ram.mem;
 				return s;
