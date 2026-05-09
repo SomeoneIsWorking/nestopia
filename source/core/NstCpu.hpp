@@ -502,6 +502,27 @@ namespace Nes
 				return apu;
 			}
 
+			/* difftest accessor — exposes CPU registers and RAM for comparison */
+			struct DifftestState
+			{
+				uint pc, a, x, y, sp;
+				uint flags_packed; /* Flags::Pack() result = standard P byte */
+				const byte *ram;   /* points to internal 2KB RAM (valid until next call) */
+			};
+
+			DifftestState GetDifftestState() const
+			{
+				DifftestState s;
+				s.pc           = pc;
+				s.a            = a;
+				s.x            = x;
+				s.y            = y;
+				s.sp           = sp;
+				s.flags_packed = flags.Pack();
+				s.ram          = ram.mem;
+				return s;
+			}
+
 			Cycle Update(uint readAddress=0)
 			{
 				apu.ClockDMA( readAddress );
