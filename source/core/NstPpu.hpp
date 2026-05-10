@@ -540,6 +540,16 @@ namespace Nes
 				return output.burstPhase;
 			}
 
+			const byte* GetOam() const
+			{
+				return oam.ram;
+			}
+
+			uint GetOamAddr() const
+			{
+				return regs.oam;
+			}
+
 			void EnableSpriteLimit(bool enable)
 			{
 				oam.spriteLimit = enable;
