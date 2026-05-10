@@ -199,6 +199,7 @@ namespace Nes
 			}
 
 			lastPc  = 0;
+			lastOp  = 0;
 			opcode  = 0;
 			flags.i = Flags::I;
 			jammed  = false;
@@ -1975,7 +1976,8 @@ namespace Nes
 		{
 			cycles.offset = cycles.count;
 			lastPc = pc;
-			(*this.*opcodes[opcode=FetchPc8()])();
+			lastOp = (opcode = FetchPc8());
+			(*this.*opcodes[opcode])();
 		}
 
 		void Cpu::Run0()

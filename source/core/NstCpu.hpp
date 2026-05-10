@@ -480,6 +480,7 @@ namespace Nes
 			Interrupt interrupt;
 			Hooks hooks;
 			uint lastPc;
+			uint lastOp;
 			uint opcode;
 			word jammed;
 			word model;
@@ -509,6 +510,10 @@ namespace Nes
 				uint last_pc;
 				uint pc, a, x, y, sp;
 				uint opcode;
+				uint cycle_count;
+				uint frame_cycles;
+				uint nmi_clock;
+				uint irq_clock;
 				uint flags_packed; /* Flags::Pack() result = standard P byte */
 				const byte *ram;   /* points to internal 2KB RAM (valid until next call) */
 			};
@@ -522,7 +527,11 @@ namespace Nes
 				s.x            = x;
 				s.y            = y;
 				s.sp           = sp;
-				s.opcode       = opcode;
+				s.opcode       = lastOp;
+				s.cycle_count  = cycles.count;
+				s.frame_cycles = cycles.frame;
+				s.nmi_clock    = interrupt.nmiClock;
+				s.irq_clock    = interrupt.irqClock;
 				s.flags_packed = flags.Pack();
 				s.ram          = ram.mem;
 				return s;
